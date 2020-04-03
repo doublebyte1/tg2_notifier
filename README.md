@@ -93,7 +93,7 @@ Once you've made your changes (and tested them), please create a pull request.
 
 ### Issues
 
-Please use the issue tracker on GitHub.
+Please use the [issue tracker](https://github.com/doublebyte1/tg2_notifier/issues) on GitHub.
 
 ### Donations
 
