@@ -70,7 +70,23 @@ To understand how to fill these values, please read bellow.
 
 ### TG2G credentials
 
-In order 
+In order to connect retrieve your TGT user id and token, you will need to sniff the requests on your phone app.
+To do that, you can use the [PortSwigger proxy](https://portswigger.net/). The free version works fine for this task.
+Follow this tutorial, to understand how to setup the proxy:
+
+https://portswigger.net/support/configuring-an-android-device-to-work-with-burp.
+
+You should go through the following steps:
+* Install and configure PortSwigger on your computer.
+* Configure your phone to use the proxy.
+* On your phone, enter the proxy page to download the SSL certificate. Install that certificate on your phone.
+* The certificate will be installed as a user certificate, but in order for TG2G it needs to be a system certificate. In order to do that, you need to copy the certificate file to `/system/etc/security/cacerts/`. Use [adb](https://www.fosslinux.com/25170/how-to-install-and-setup-adb-tools-on-linux.htm) to do that (you will need to root your phone first!)
+* If the app refuses to use the proxy, install [ProxyDroid](https://play.google.com/store/apps/details?id=org.proxydroid&hl=en) on your phone.
+* Open the TG2G app, and refresh the favourites tab. The intercepted requests should popup on your PortSwigger dashboard (Proxy-> Intercept)
+
+Bellow you can see how an intercepted request looks like. Take note of the `Bearer` (TGTG_USER_TOKEN) and `user_id`_ (TGTG_USER_ID). Update them in your .env file.
+
+![](blurp_blurred_small.png) 
 
 ### Telegram
 
