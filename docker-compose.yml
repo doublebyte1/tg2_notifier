@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+    tg2g:
+        build: .
+        ports:
+           - 3000:3000
+        image: doublebyte/tg2g:latest
+        container_name: "tg2g"
