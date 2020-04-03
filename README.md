@@ -2,19 +2,19 @@
 
 ## Background
 
-Basically, I was tired of constantly refreshing my "Favorites" tab, on the app, to see if anything interesting became available. In more popular shops, sometimes items were getting sold out in a matter of minutes, so it was really **critical** to get notified, in order to get hold of my favorite items!
+Basically, I was tired of constantly refreshing my "Favourites" tab, on the app, to see if anything interesting became available. In more popular shops, sometimes items were getting sold out in a matter of minutes, so it was really **critical** to get notified, in order to get hold of my favourite items!
 
 ![](favorites_small_blurred.jpeg) 
 
 ## Description
 
-This is a server application and a TG2G client. Every minute, it checks if any of your favorite items has become available. If they are available, it send a message to a telegram channel.
+This is a server application and a TG2G client. Every minute, it checks if any of your favourite items has become available. If they are available, it send a message to a telegram channel.
 
 ![](telegram_blurred.jpeg) 
 
 The application checks for changes, so if nothing changes from the previous request (e.g.: no items became available or unavailable) it does not send any message. In this way, we prevent flooding the telegram channel with messages.
 
-Not sure if TG2G checks for the latency of requests for a given IP. Just to be safe, I would not be *always* running the server application, but would use it during a given time, when I know interesting items will became available (for instance, between 21h and 22h). You can check the favorite section to see when the items were last sold out. Most shops have pretty consistent time patterns.
+Not sure if TG2G checks for the latency of requests for a given IP. Just to be safe, I would not be *always* running the server application, but would use it during a given time, when I know interesting items will became available (for instance, between 21h and 22h). You can check the favourite section to see when the items were last sold out. Most shops have pretty consistent time patterns.
 
 
 ## INSTALL & RUN
@@ -84,7 +84,7 @@ You should go through the following steps:
 * If the app refuses to use the proxy, install [ProxyDroid](https://play.google.com/store/apps/details?id=org.proxydroid&hl=en) on your phone.
 * Open the TG2G app, and refresh the favourites tab. The intercepted requests should popup on your PortSwigger dashboard (Proxy-> Intercept)
 
-Bellow you can see how an intercepted request looks like. Take note of the `Bearer` (TGTG_USER_TOKEN) and `user_id`_ (TGTG_USER_ID). Update them in your .env file.
+Bellow you can see how an intercepted request looks like. Take note of the `Bearer` (TGTG_USER_TOKEN) and `user_id` (TGTG_USER_ID). Update them in your .env file.
 
 ![](blurp_blurred_small.png) 
 
