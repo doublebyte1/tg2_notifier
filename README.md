@@ -105,3 +105,5 @@ If you want to support this project, by helping the developers to buy some coffe
 ## Contributors:
  * [Joana Simoes](http://github.com/doublebyte1)
 
+## License:
+ * [GPL](LICENSE)
