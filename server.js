@@ -31,7 +31,7 @@ app.listen(3000, function () {
         var request = require('request');
         var options = {
         'method': 'POST',
-        'url': 'https://apptoogoodtogo.com/api/item/v4/',
+        'url': 'https://apptoogoodtogo.com/api/item/v6/',
         'headers': {
             'User-Agent': 'TGTG/20.2.2 Dalvik/2.1.0 (Linux; U; Android 9; Moto G Build/PQ1A.181205.006)',
             'Authorization': `Bearer ${userToken}`,
