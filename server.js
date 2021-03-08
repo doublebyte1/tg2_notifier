@@ -46,33 +46,34 @@ app.listen(3000, function () {
 
         var json = JSON.parse(response.body); 
         //console.log(json);
-        const dt = new Date();
-        console.log('{ "timestamp": "' + dt.toUTCString() + '", "status": "' 
-            + HttpStatus.getStatusText(parseInt(response.statusCode)) + '", "items": ' 
-                 + json.items.length + '}');
+        if (json.items){
+            const dt = new Date();
+            console.log('{ "timestamp": "' + dt.toUTCString() + '", "status": "' 
+                + HttpStatus.getStatusText(parseInt(response.statusCode)) + '", "items": ' 
+                    + json.items.length + '}');
 
-        if (json.items.length > 0){
-            let str = "<b>Some items are available on:</b>\n";
+            if (json.items.length > 0){
+                let str = "<b>Some items are available on:</b>\n";
 
-            for(const store of json.items) {
-                //console.log(store['store']);
-                str+='<u>' + store['store']['store_name'] + '</u>\n';
+                for(const store of json.items) {
+                    //console.log(store['store']);
+                    str+='<u>' + store['store']['store_name'] + '</u>\n';
+                }
+
+                if (oldStr !== str){
+                    api.sendMessage({
+                        chat_id: chatId,
+                        text: str,
+                        parse_mode: "HTML"
+                    })
+        
+                }
+                oldStr = str;
+
+
             }
-
-            if (oldStr !== str){
-                api.sendMessage({
-                    chat_id: chatId,
-                    text: str,
-                    parse_mode: "HTML"
-                })
-    
-            }
-            oldStr = str;
-
-
-        }
-
-
+            
+         } 
         });
 
     }
