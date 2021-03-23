@@ -9,11 +9,13 @@ var telegram = require('telegram-bot-api');
 
 const stockOnly = true;
 const userId = process.env.TGTG_USER_ID;
-const userToken = process.env.TGTG_USER_TOKEN;
+//const userToken = process.env.TGTG_USER_TOKEN;
 const telegramToken = process.env.TELEGRAM_API_TOKEN;
 const email = process.env.TGTG_EMAIL;
 const password = process.env.TGTG_PWD;
 let oldStr = "";
+
+const url='https://apptoogoodtogo.com/api';
 
 var app = express();app.get('/', function (req, res) {
   res.send('Hello World!');
@@ -30,7 +32,7 @@ function loginByEmail(){
     var request = require('request');
     var options = {
       'method': 'POST',
-      'url': 'https://apptoogoodtogo.com/api/auth/v1/loginByEmail',
+      'url': `${url}/auth/v1/loginByEmail`,
       'headers': {
         'Content-Type': 'application/json'
       },
@@ -54,7 +56,7 @@ function refreshToken(refresh_token){
     var request = require('request');
     var options = {
     'method': 'POST',
-    'url': 'https://apptoogoodtogo.com/api/auth/v1/token/refresh?User-Agent=TGTG/20.9.2 Dalvik/2.1.0 (Linux; U; Android 9; Moto G Build/PQ1A.181205.006)&Accept-Language=en-GB&Content-Type=application/json; charset=utf-8&Host=apptoogoodtogo.com&Connection=close&Accept-Encoding=gzip, deflate',
+    'url': `${url}/auth/v1/token/refresh?User-Agent=TGTG/20.9.2 Dalvik/2.1.0 (Linux; U; Android 9; Moto G Build/PQ1A.181205.006)&Accept-Language=en-GB&Content-Type=application/json; charset=utf-8&Host=apptoogoodtogo.com&Connection=close&Accept-Encoding=gzip, deflate`,
     'headers': {
         'Content-Type': 'application/json'
     },
@@ -89,7 +91,7 @@ function checkFavorites(access_token){
     var request = require('request');
     var options = {
     'method': 'POST',
-    'url': 'https://apptoogoodtogo.com/api/item/v6/',
+    'url': `${url}/item/v6/`,
     'headers': {
         'User-Agent': 'TGTG/20.2.2 Dalvik/2.1.0 (Linux; U; Android 9; Moto G Build/PQ1A.181205.006)',
         'Authorization': `Bearer ${access_token}`,
