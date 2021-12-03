@@ -7,7 +7,7 @@ var HttpStatus = require('http-status-codes');
 var express = require('express');
 var telegram = require('telegram-bot-api');
 
-const stockOnly = false;
+const stockOnly = true;
 const userId = process.env.TGTG_USER_ID;
 //const userToken = process.env.TGTG_USER_TOKEN;
 const telegramToken = process.env.TELEGRAM_API_TOKEN;
@@ -112,36 +112,8 @@ function checkFavorites(access_token){
 
         var json = response.data; 
 
-         if (json.items){
-            console.log("found items");
-            const dt = new Date();
-            console.log('{ "timestamp": "' + dt.toUTCString() + '", "status": "' 
-                + HttpStatus.getStatusText(parseInt(response.status)) + '", "items": ' 
-                    + json.items.length + '}');
-    
-            if (json.items.length > 0){
-                let str = "<b>Some items are available on:</b>\n";
-    
-                for(const store of json.items) {
-                    //console.log(store['store']);
-                    str+='<u>' + store['store']['store_name'] + '</u>\n';
-                }
-    
-                if (oldStr !== str){
-                    api.sendMessage({
-                        chat_id: chatId,
-                        text: str,
-                        parse_mode: "HTML"
-                    })
-        
-                }
-                oldStr = str;
-    
-    
-            }
-            
-         }
-         else console.log("no items found"); 
+        process_items(json);
+
         
       })
       .catch(function (error) {
@@ -149,6 +121,40 @@ function checkFavorites(access_token){
       });
 
 
+}
+
+
+function processItems(json){
+    if (json.items){
+        //console.log("found items");
+        const dt = new Date();
+        console.log('{ "timestamp": "' + dt.toUTCString() + '", "status": "' 
+            + HttpStatus.getStatusText(parseInt(response.status)) + '", "items": ' 
+                + json.items.length + '}');
+
+        if (json.items.length > 0){
+            let str = "<b>Some items are available on:</b>\n";
+
+            for(const store of json.items) {
+                //console.log(store['store']);
+                str+='<u>' + store['store']['store_name'] + '</u>\n';
+            }
+
+            if (oldStr !== str){
+                api.sendMessage({
+                    chat_id: chatId,
+                    text: str,
+                    parse_mode: "HTML"
+                })
+    
+            }
+            oldStr = str;
+
+
+        }
+        
+     }
+     //else console.log("no items found"); 
 }
 
 
