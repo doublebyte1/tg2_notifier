@@ -110,9 +110,11 @@ function checkFavorites(access_token){
       axios(config)
       .then(function (response) {
 
+        console.log("comes here!");
         var json = response.data; 
 
-        process_items(json);
+        //console.log(json);
+        processItems(json, response.status);
 
         
       })
@@ -121,15 +123,17 @@ function checkFavorites(access_token){
       });
 
 
+
 }
 
 
-function processItems(json){
+function processItems(json, status){
+
     if (json.items){
         //console.log("found items");
         const dt = new Date();
         console.log('{ "timestamp": "' + dt.toUTCString() + '", "status": "' 
-            + HttpStatus.getStatusText(parseInt(response.status)) + '", "items": ' 
+            + HttpStatus.getStatusText(parseInt(status)) + '", "items": ' 
                 + json.items.length + '}');
 
         if (json.items.length > 0){
@@ -175,6 +179,6 @@ app.listen(3000, function () {
     setInterval(function() {
     checkFavorites(access_token);
     //}, 60 * 1000); // 60 * 1000 milsec
-    }, 120 * 1000); // 60 * 1000 milsec
+    }, 180 * 1000); // 60 * 1000 milsec
 
 });
