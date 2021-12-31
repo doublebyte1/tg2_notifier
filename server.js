@@ -12,8 +12,8 @@ const userId = process.env.TGTG_USER_ID;
 //const userToken = process.env.TGTG_USER_TOKEN;
 const telegramToken = process.env.TELEGRAM_API_TOKEN;
 const email = process.env.TGTG_EMAIL;
-const password = process.env.TGTG_PWD;
-const access_token = process.env.TGTG_TOKEN;
+//const password = process.env.TGTG_PWD;
+//const access_token = "";//process.env.TGTG_TOKEN;
 let oldStr = "";
 
 const url='https://apptoogoodtogo.com/api';
@@ -27,63 +27,91 @@ var api = new telegram({
 });
 const chatId = -363155949
 
-/*
-function loginByEmail(){
+function requestEmail(){
 
-    var request = require('request');
-    var options = {
-      'method': 'POST',
-      'url': `${url}/auth/v2/loginByEmail`,
-      'headers': {
-        'Content-Type': 'application/json'
-      },
-      body: `{\"device_type\":\"UNKNOWN\",\"email\":\"${email}\",\"password\":\"${password}\"}`
-    
-    };
+  var axios = require('axios');
+  var data = '{"device_type":"ANDROID","email":"jo@doublebyte.net"}';
 
-    request(options, function (error, response) {
-      if (error) throw new Error(error);
-      var json = JSON.parse(response.body); 
-      console.log("Got refresh token: " + json.refresh_token);
-      refreshToken(json.refresh_token);
-
-    });
-
-};
-
-
-function refreshToken(refresh_token){
-
-    var request = require('request');
-    var options = {
-    'method': 'POST',
-    'url': `${url}/auth/v1/token/refresh?User-Agent=TGTG/20.9.2 Dalvik/2.1.0 (Linux; U; Android 9; Moto G Build/PQ1A.181205.006)&Accept-Language=en-GB&Content-Type=application/json; charset=utf-8&Host=apptoogoodtogo.com&Connection=close&Accept-Encoding=gzip, deflate`,
-    'headers': {
-        'Content-Type': 'application/json'
+  var config = {
+    method: 'post',
+    url: 'https://apptoogoodtogo.com/api/auth/v3/authByEmail',
+    headers: { 
+      'Host': 'apptoogoodtogo.com', 
+      'Accept': 'application/json', 
+      'User-Agent': 'TGTG/21.11.1 Dalvik/2.1.0 (Linux; U; Android 9; Moto G Build/PQ1A.181205.006)', 
+      'Accept-Language': 'en-GB', 
+      'Content-Type': 'application/json; charset=utf-8', 
+      'Content-Length': '53', 
+      'Accept-Encoding': 'gzip, deflate', 
+      'Cookie': 'datadome=QPTxYMa-O_0x9cdynbkEX4IUn6bNVbAs6HEqoYgIiSewv09dTCSnqgTS9utJYWjcydkvW1htFOinI1As8ySMXQAVpwh1VKF~04jLW_DdDFdu.KMtindWkMQZB~LzZXM'
     },
-    body: `{\"refresh_token\":\"${refresh_token}\"}`
+    data : data
+  };
 
+  axios(config)
+  .then(function (response) {
+    json = response.data;
+    console.log(JSON.stringify(json));
+    authRequestByPollingId(json.polling_id);
+
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+}
+
+function authRequestByPollingId(polling_id){
+
+    var axios = require('axios');
+    var data = `{"device_type":"ANDROID","email":"jo@doublebyte.net","request_polling_id":"${polling_id}"}`;
+
+    var config = {
+      method: 'post',
+      url: 'https://apptoogoodtogo.com/api/auth/v3/authByRequestPollingId',
+      headers: { 
+        'Host': 'apptoogoodtogo.com', 
+        'Accept': 'application/json', 
+        'User-Agent': 'TGTG/21.11.1 Dalvik/2.1.0 (Linux; U; Android 9; Moto G Build/PQ1A.181205.006)', 
+        'Accept-Language': 'en-GB', 
+        'Content-Type': 'application/json; charset=utf-8', 
+        'Content-Length': '113', 
+        'Accept-Encoding': 'gzip, deflate', 
+        'Cookie': 'datadome=QPTxYMa-O_0x9cdynbkEX4IUn6bNVbAs6HEqoYgIiSewv09dTCSnqgTS9utJYWjcydkvW1htFOinI1As8ySMXQAVpwh1VKF~04jLW_DdDFdu.KMtindWkMQZB~LzZXM'
+      },
+      data : data
     };
-    request(options, function (error, response) {
-        if (error) throw new Error(error);
 
-        var json = JSON.parse(response.body); 
-        console.log("Got access token: " + json.access_token);
-      
-    
-        fn60sec(json.access_token);
-        setInterval(fn60sec, 60*1000);
-    
-        setInterval(function() {
-        checkFavorites(json.access_token);
-        //}, 60 * 1000); // 60 * 1000 milsec
-        }, 120 * 1000); // 60 * 1000 milsec
-  
+    axios(config)
+    .then(function (response) {
+      //console.log(JSON.stringify(response.status));
+      console.log("Please check your email.");
 
+      response.data==""?authRequestByPollingId(polling_id): checkLoop(response.data.access_token)
+
+    })
+    .catch(function (error) {
+      console.log(error);
     });
+}
+
+function fn60sec(access_token) {
+  // runs every 60 sec and runs on init.
+  checkFavorites(access_token);
+  }
+
+function checkLoop(access_token){
+    
+  console.log(access_token);
+    fn60sec(access_token);
+    setInterval(fn60sec, 60*1000);
+
+    setInterval(function() {
+    checkFavorites(access_token);
+    //}, 60 * 1000); // 60 * 1000 milsec
+    }, 300 * 1000); // 60 * 1000 milsec
 
 }
-*/
+
 function checkFavorites(access_token){
 
     var axios = require('axios');
@@ -99,7 +127,7 @@ function checkFavorites(access_token){
         'Accept-Language': 'en-GB', 
         'Authorization': `Bearer ${access_token}`, 
         'Content-Type': 'application/json; charset=utf-8', 
-        'Content-Length': '262', 
+        'Content-Length': Buffer.byteLength(data), 
         'Host': 'apptoogoodtogo.com', 
         'Connection': 'close', 
         'Accept-Encoding': 'gzip, deflate'
@@ -119,7 +147,8 @@ function checkFavorites(access_token){
         
       })
       .catch(function (error) {
-        console.log(error);
+        console.log("Error on 'checkFavorites'");
+        console.log(error.message);
       });
 
 
@@ -130,7 +159,7 @@ function checkFavorites(access_token){
 function processItems(json, status){
 
     if (json.items){
-        //console.log("found items");
+        console.log("found items");
         const dt = new Date();
         console.log('{ "timestamp": "' + dt.toUTCString() + '", "status": "' 
             + HttpStatus.getStatusText(parseInt(status)) + '", "items": ' 
@@ -162,23 +191,12 @@ function processItems(json, status){
 }
 
 
-function fn60sec(access_token) {
-    // runs every 60 sec and runs on init.
-    checkFavorites(access_token);
-    }
-
-
 
 app.listen(3000, function () {
 
     console.log('Tg2g Notifier listening on port 3000!');
 
-    fn60sec(access_token);
-    setInterval(fn60sec, 60*1000);
-
-    setInterval(function() {
-    checkFavorites(access_token);
-    //}, 60 * 1000); // 60 * 1000 milsec
-    }, 180 * 1000); // 60 * 1000 milsec
+    requestEmail();
+    //authRequestByPollingId("049556b3-6679-49be-999d-cc0d6453adaa");
 
 });
