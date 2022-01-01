@@ -17,6 +17,7 @@ const email = process.env.TGTG_EMAIL;
 let oldStr = "";
 
 const url='https://apptoogoodtogo.com/api';
+const interval = 100;
 
 var app = express();app.get('/', function (req, res) {
   res.send('Hello World!');
@@ -103,12 +104,11 @@ function checkLoop(access_token){
     
   console.log(access_token);
     fn60sec(access_token);
-    setInterval(fn60sec, 60*1000);
+    setInterval(fn60sec, interval*1000);
 
     setInterval(function() {
     checkFavorites(access_token);
-    //}, 60 * 1000); // 60 * 1000 milsec
-    }, 300 * 1000); // 60 * 1000 milsec
+    }, interval * 1000); // 60 * 1000 milsec
 
 }
 
